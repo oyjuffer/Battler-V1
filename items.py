@@ -41,6 +41,4 @@ health_ring				= Item("Health Ring", 0, 0, 4, None, None, [0, 0], [0, 0])
 ring_of_intelligence 	= Item("Ring of Intelligence", 0, 4, 0, None, random.randint(1, 2), [0, 0], [1, 2])
 spikey_ring				= Item("Spikey Ring", 4, 0, -2, random.randint(1, 4), None, [1, 4], [0, 0])
 
-testitem = 1
-
 

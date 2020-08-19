@@ -22,5 +22,3 @@ YELLOW 	= (255, 255, 0)
 
 #FONT SETTINGS
 FONT_NAME = "arial"
-
-really = 1

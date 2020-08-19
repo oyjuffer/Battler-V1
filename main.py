@@ -686,7 +686,3 @@ def compendium():
 
 
 main_menu()
-
-
-
-print("This worked!")
