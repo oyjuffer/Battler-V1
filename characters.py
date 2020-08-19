@@ -77,5 +77,6 @@ class Character:
         self.inventory = []
 
 
-player = Character("Lorther", 1, 10, 1, 1, none)
-npc_dustin_echos = Character("Dustin Echos", 2, 2, 2, 2, vorpal_sword)
+player              = Character("Lorther", 1, 10, 1, 1, none)
+npc_dustin_echos    = Character("Dustin Echos", 2, 2, 2, 2, vorpal_sword)
+npc_aurore          =  Character("Aurore", 3, 3, 3, 3, vorpal_sword)  
