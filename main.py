@@ -24,11 +24,7 @@ all_sprites = pygame.sprite.Group()
 class User:
     def __init__(self):
         self.menu_location = [1, 1]
-
-
 user = User()
-
-
 class Button():
     def __init__(self, surface, text, colour, size, x, y, button_location):
         self.surface = surface
@@ -64,8 +60,6 @@ class Button():
 
     def function(self):
         pass
-
-
 class Submenu():
     def __init__(self, title, content):
         self.title = title
@@ -142,8 +136,6 @@ class Submenu():
             pygame.display.update()
             pygame.display.flip()
             clock.tick(FPS)
-
-
 class Nameplate():
     def __init__(self, x, y, nameplate):
         self.x = x
@@ -184,23 +176,17 @@ def draw_text(text, size, colour, surface, x, y):
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
     surface.blit(text_surface, text_rect)
-
-
 def draw_text_left(text, size, colour, surface, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, colour)
     text_rect = text_surface.get_rect()
     text_rect.midleft = (x, y)
     surface.blit(text_surface, text_rect)
-
-
 def draw_edge(colour):
     screen.fill(colour)
     edge = pygame.Surface((480, 480))
     edge.fill(WHITE)
     screen.blit(edge, (10, 10))
-
-
 def wait_for_key():
     waiting = True
     while waiting:
@@ -211,8 +197,6 @@ def wait_for_key():
                 running = False
             if event.type == pygame.KEYDOWN:
                 waiting = False
-
-
 def menu_control(menu_values):
     minmax_data = menu_values
     keystate = pygame.key.get_pressed()
@@ -263,14 +247,10 @@ def menu_control(menu_values):
             user.menu_location[0] += 1
             sleep(0.1)
             print("MATRIX: " + str(user.menu_location))
-
-
 def draw_rect_center(surface, colour, x, y, sx, sy, edge):
     rect = pygame.Rect(0, 0, sx, sy)
     rect.center = (x, y)
     pygame.draw.rect(surface, colour, rect, edge)
-
-
 def menu_control_minmax(menu_list):
     max_x = 1
     max_y = 1
@@ -289,8 +269,6 @@ def menu_control_minmax(menu_list):
             if max_y < submenu_list[1]:
                 max_y = submenu_list[1]
     return min_x, min_y, max_x, max_y
-
-
 def reduce_health(damage_done, player_nameplate, target_nameplate):
     for i in range(damage_done):
         target_nameplate.update()
@@ -303,8 +281,6 @@ def reduce_health(damage_done, player_nameplate, target_nameplate):
 
         pygame.display.update()
         clock.tick(FPS)
-
-
 def draw_battle_text(type, damage_done, player, player_nameplate, target, target_nameplate):
     text = str(player.name) + " attacks for " + str(damage_done) + " " + str(type) + " damage!"
     display_text_1 = ""
@@ -397,8 +373,6 @@ def main_menu():
         pygame.display.update()
         pygame.display.flip()
         clock.tick(FPS)
-
-
 def start_game():
     running = True
     while running:
@@ -575,8 +549,6 @@ def start_game():
         pygame.display.update()
         # pygame.display.flip()
         clock.tick(FPS)
-
-
 def game():
     user.menu_location = [1, 1]
     running = True
@@ -677,8 +649,6 @@ def game():
 
         if player.health <= 0:
             running = False
-
-
 def compendium():
     running = True
     while running:
@@ -716,3 +686,7 @@ def compendium():
 
 
 main_menu()
+
+
+
+print("This worked!")
