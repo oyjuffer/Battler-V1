@@ -617,7 +617,6 @@ def game():
 
                         if user.menu_location == [1, 2]:
                             print("MAGIC")
-                            battle_phase = 2
 
                         if user.menu_location == [1, 3]:
                             print("ITEM")
