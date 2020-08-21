@@ -31,7 +31,7 @@ mace 					= Item("Mace", 1, 1, 1, random.randint(1, 6), 0, [1, 6], [0, 0])
 sword 					= Item("Sword", 2, 0, 1, random.randint(1, 6), 0, [1, 6], [0, 0])
 rune_sword 				= Item("Rune Sword", 4, 0, 2, random.randint(2, 12), 0, [2, 12], [0, 0])
 axe						= Item("Axe", 4, 0, 2, random.randint(1, 6), 0, [1, 6], [0, 0])
-vorpal_sword 			= Item("Vorpal Sword", 1, 1, 1, random.randint(1, 11), 0, [1, 11], [0, 0])
+vorpal_sword 			= Item("Vorpal Sword", 1, 1, 1, random.randint(50, 100), 0, [50, 100], [0, 0])
 staff					= Item("Magic Staff", 0, 3, 0, random.randint(0, 4), random.randint(6, 12), [0, 4], [6, 12])
 
 chain_mail 				= Item("Chain Mail", 2, 0, 1, None, None, [0, 0], [0, 0])
