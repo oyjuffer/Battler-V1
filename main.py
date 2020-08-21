@@ -25,6 +25,7 @@ class User:
     def __init__(self):
         self.menu_location = [1, 1]
 user = User()
+
 class Button():
     def __init__(self, surface, text, colour, size, x, y, button_location):
         self.surface = surface
@@ -60,6 +61,7 @@ class Button():
 
     def function(self):
         pass
+
 class Submenu():
     def __init__(self, title, content):
         self.title = title
@@ -136,6 +138,7 @@ class Submenu():
             pygame.display.update()
             pygame.display.flip()
             clock.tick(FPS)
+
 class Nameplate():
     def __init__(self, x, y, nameplate):
         self.x = x
@@ -174,10 +177,10 @@ class Battletext():
 
     def plain(self, text): 
         self.text = text
-        #draw_battle_text1(self.text)
+        return self.text
 
     def physical_damage(self, name, damage_done):
-        self.text = str(name) + " attacks for " + str(damage_done) + " " + "  physical damage!"
+        self.text = str(name) + " attacks for " + str(damage_done) + " physical damage!"
         return self.text
 
     def magical_damage(self):
@@ -191,17 +194,20 @@ def draw_text(text, size, colour, surface, x, y):
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
     surface.blit(text_surface, text_rect)
+
 def draw_text_left(text, size, colour, surface, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, colour)
     text_rect = text_surface.get_rect()
     text_rect.midleft = (x, y)
     surface.blit(text_surface, text_rect)
+
 def draw_edge(colour):
     screen.fill(colour)
     edge = pygame.Surface((480, 480))
     edge.fill(WHITE)
     screen.blit(edge, (10, 10))
+
 def wait_for_key():
     waiting = True
     while waiting:
@@ -212,6 +218,7 @@ def wait_for_key():
                 running = False
             if event.type == pygame.KEYDOWN:
                 waiting = False
+
 def menu_control(menu_values):
     minmax_data = menu_values
     keystate = pygame.key.get_pressed()
@@ -262,10 +269,12 @@ def menu_control(menu_values):
             user.menu_location[0] += 1
             sleep(0.1)
             print("MATRIX: " + str(user.menu_location))
+
 def draw_rect_center(surface, colour, x, y, sx, sy, edge):
     rect = pygame.Rect(0, 0, sx, sy)
     rect.center = (x, y)
     pygame.draw.rect(surface, colour, rect, edge)
+
 def menu_control_minmax(menu_list):
     max_x = 1
     max_y = 1
@@ -284,6 +293,7 @@ def menu_control_minmax(menu_list):
             if max_y < submenu_list[1]:
                 max_y = submenu_list[1]
     return min_x, min_y, max_x, max_y
+
 def reduce_health(damage_done, player_nameplate, target_nameplate):
     for i in range(damage_done):
         target_nameplate.update()
@@ -296,39 +306,6 @@ def reduce_health(damage_done, player_nameplate, target_nameplate):
 
         pygame.display.update()
         clock.tick(FPS)
-def draw_battle_text1(type, damage_done, player, player_nameplate, target, target_nameplate):
-    text = str(player.name) + " attacks for " + str(damage_done) + " " + str(type) + " damage!"
-    display_text_1 = ""
-    display_text_2 = ""
-    display_text_3 = ""
-
-    for i in text:
-
-        draw_edge(BLACK)
-        pygame.draw.rect(screen, BLACK, [0, 350, 500, 10])
-
-        if len(display_text_1) <= 35:
-            display_text_1 += i
-            draw_text_left(display_text_1, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.77)
-        elif len(display_text_2) <= 35:
-            display_text_2 += i
-            draw_text_left(display_text_1, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.77)
-            draw_text_left(display_text_2, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.85)
-        elif len(display_text_3) <= 35:
-            display_text_3 += i
-            draw_text_left(display_text_1, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.77)
-            draw_text_left(display_text_2, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.85)
-            draw_text_left(display_text_3, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.93)
-
-        player_nameplate.draw()
-        target_nameplate.draw()
-
-        pygame.display.update()
-        clock.tick(FPS)
-
-        sleep(0.02)
-
-    wait_for_key()
 
 def draw_battle_text(text, player_nameplate, target_nameplate):
     
@@ -422,6 +399,7 @@ def main_menu():
         pygame.display.update()
         pygame.display.flip()
         clock.tick(FPS)
+
 def start_game():
     running = True
     while running:
@@ -598,6 +576,7 @@ def start_game():
         pygame.display.update()
         # pygame.display.flip()
         clock.tick(FPS)
+
 def game():
     running = True
 
@@ -608,8 +587,6 @@ def game():
     target.convert_stats()
     target.health = target.max_health
 
-    battletext = Battletext()
-
     # INITIALIZATION
     player_nameplate = Nameplate(237, 267, player)
     target_nameplate = Nameplate(12, 12, target)
@@ -617,6 +594,8 @@ def game():
     attack_button = Button(screen, "ATTACK", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.77, [1, 1])
     magic_button = Button(screen, "MAGIC", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.85, [1, 2])
     inventory_button = Button(screen, "ITEM", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.93, [1, 3])
+
+    battletext = Battletext()
 
 
 
