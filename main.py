@@ -6,6 +6,7 @@ import sys
 from time import sleep
 
 # IMPORT GAME FILES
+from abilities import *
 from characters import *
 from items import *
 from settings import *
@@ -136,8 +137,22 @@ class Submenu():
                     sys.exit()
 
             pygame.display.update()
-            pygame.display.flip()
+            #pygame.display.flip()
             clock.tick(FPS)
+
+class Submenu_new():
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
+        user.menu_location = [1, 1]
+
+    def running(self):
+        running = True
+        while running: 
+            pass
+
+
+
 
 class Nameplate():
     def __init__(self, x, y, nameplate):
@@ -617,6 +632,11 @@ def game():
 
                         if user.menu_location == [1, 2]:
                             print("MAGIC")
+                            # magic_abilities = Submenu("Magic", player.magic_abilities)
+                            # magic_abilities.running()
+
+
+
 
                         if user.menu_location == [1, 3]:
                             print("ITEM")
