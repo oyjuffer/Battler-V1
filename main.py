@@ -168,6 +168,21 @@ class Nameplate():
     def update(self):
         self.nameplate.health -= 1
 
+class Battletext():
+    def __init__(self):
+        self.text            = ""
+
+    def plain(self, text): 
+        self.text = text
+        #draw_battle_text1(self.text)
+
+    def physical_damage(self, name, damage_done):
+        self.text = str(name) + " attacks for " + str(damage_done) + " " + "  physical damage!"
+        return self.text
+
+    def magical_damage(self):
+        pass
+
 
 # FUNCTION LIST
 def draw_text(text, size, colour, surface, x, y):
@@ -281,8 +296,42 @@ def reduce_health(damage_done, player_nameplate, target_nameplate):
 
         pygame.display.update()
         clock.tick(FPS)
-def draw_battle_text(type, damage_done, player, player_nameplate, target, target_nameplate):
+def draw_battle_text1(type, damage_done, player, player_nameplate, target, target_nameplate):
     text = str(player.name) + " attacks for " + str(damage_done) + " " + str(type) + " damage!"
+    display_text_1 = ""
+    display_text_2 = ""
+    display_text_3 = ""
+
+    for i in text:
+
+        draw_edge(BLACK)
+        pygame.draw.rect(screen, BLACK, [0, 350, 500, 10])
+
+        if len(display_text_1) <= 35:
+            display_text_1 += i
+            draw_text_left(display_text_1, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.77)
+        elif len(display_text_2) <= 35:
+            display_text_2 += i
+            draw_text_left(display_text_1, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.77)
+            draw_text_left(display_text_2, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.85)
+        elif len(display_text_3) <= 35:
+            display_text_3 += i
+            draw_text_left(display_text_1, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.77)
+            draw_text_left(display_text_2, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.85)
+            draw_text_left(display_text_3, 32, BLACK, screen, WIDTH * 0.05, HEIGHT * 0.93)
+
+        player_nameplate.draw()
+        target_nameplate.draw()
+
+        pygame.display.update()
+        clock.tick(FPS)
+
+        sleep(0.02)
+
+    wait_for_key()
+
+def draw_battle_text(text, player_nameplate, target_nameplate):
+    
     display_text_1 = ""
     display_text_2 = ""
     display_text_3 = ""
@@ -550,24 +599,31 @@ def start_game():
         # pygame.display.flip()
         clock.tick(FPS)
 def game():
-    user.menu_location = [1, 1]
     running = True
+
+    user.menu_location = [1, 1]
     battle_phase = 1
     target = npc_dustin_echos
 
     target.convert_stats()
     target.health = target.max_health
 
+    battletext = Battletext()
+
+    # INITIALIZATION
+    player_nameplate = Nameplate(237, 267, player)
+    target_nameplate = Nameplate(12, 12, target)
+
+    attack_button = Button(screen, "ATTACK", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.77, [1, 1])
+    magic_button = Button(screen, "MAGIC", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.85, [1, 2])
+    inventory_button = Button(screen, "ITEM", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.93, [1, 3])
+
+
+
     while running:
 
         if battle_phase == 1:
-
-            # INITIALIZATION
-            player_nameplate = Nameplate(237, 267, player)
-            target_nameplate = Nameplate(12, 12, target)
-            attack_button = Button(screen, "ATTACK", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.77, [1, 1])
-            magic_button = Button(screen, "MAGIC", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.85, [1, 2])
-            inventory_button = Button(screen, "ITEM", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.93, [1, 3])
+            print("BATTLE PHASE 1")
 
             # EVENTS
             menu_control([1, 1, 1, 3])  # min_x, min_y, max_x, max_y of button locations.
@@ -577,7 +633,7 @@ def game():
                         if user.menu_location == [1, 1]:
                             damage_done = player.attack(target)
                             reduce_health(damage_done, player_nameplate, target_nameplate)
-                            draw_battle_text(None, damage_done, player, player_nameplate, target, target_nameplate)
+                            draw_battle_text(battletext.physical_damage(player.name, damage_done), player_nameplate, target_nameplate)
                             battle_phase = 2
 
                         if user.menu_location == [1, 2]:
@@ -615,22 +671,20 @@ def game():
             pygame.display.update()
             clock.tick(FPS)
 
-        print(target.health)
-        if target.health <= 0:
-            running = False
+            if target.health <= 0:
+                draw_battle_text(str(target.name) + " has been defeated!", player_nameplate, target_nameplate)
+                running = False
+                break
 
         if battle_phase == 2:
-            print("Bphase 2")
+            print("BATTLE PHASE: 2")
 
             # INITIALIZATION
-            player_nameplate = Nameplate(237, 267, player)
-            target_nameplate = Nameplate(12, 12, target)
 
             # EVENTS
             damage_done = target.attack(player)
             reduce_health(damage_done, target_nameplate, player_nameplate)
-            draw_battle_text(None, damage_done, target, target_nameplate, player, player_nameplate)
-            # wait_for_key()
+            draw_battle_text(battletext.physical_damage(target.name, damage_done), player_nameplate, target_nameplate)
 
             # UPDATE
 
@@ -647,8 +701,14 @@ def game():
 
             battle_phase = 1
 
-        if player.health <= 0:
-            running = False
+            if player.health <= 0:
+                draw_battle_text(str(player.name) + " has been defeated!", player_nameplate, target_nameplate)
+                draw_battle_text("GAME OVER!", player_nameplate, target_nameplate)
+                running = False
+                break
+
+
+
 def compendium():
     running = True
     while running:
