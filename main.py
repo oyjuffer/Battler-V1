@@ -149,7 +149,10 @@ class Submenu_new():
     def running(self):
         running = True
         while running: 
-            pass
+            edge = pygame.Surface((480, 130))
+            edge.fill(WHITE)
+            screen.blit(edge, (10, 360))
+            draw_text(self.title, 24, BLACK, screen, WIDTH * 0.50, HEIGHT * 0.75)
 
 
 
