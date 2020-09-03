@@ -54,17 +54,11 @@ class Character:
         self.magic_damage       = (self.intelligence + self.equipped_weapon.intelligence + self.equipped_armour.intelligence + self.equipped_token.intelligence)
         self.max_health         = (self.constitution + self.equipped_weapon.constitution + self.equipped_armour.constitution + self.equipped_token.constitution) * 10 + 100
 
-        self.min_physical_damage = self.equipped_weapon.physical_damage_note[0] + \
-                                   self.equipped_armour.physical_damage_note[0] + \
-                                   self.equipped_token.physical_damage_note[0]
-        self.max_physical_damage = self.equipped_weapon.physical_damage_note[1] + \
-                                   self.equipped_armour.physical_damage_note[1] + \
-                                   self.equipped_token.physical_damage_note[1]
+        self.min_physical_damage = self.equipped_weapon.physical_damage_note[0] + self.equipped_armour.physical_damage_note[0] + self.equipped_token.physical_damage_note[0]
+        self.max_physical_damage = self.equipped_weapon.physical_damage_note[1] + self.equipped_armour.physical_damage_note[1] + self.equipped_token.physical_damage_note[1]
 
-        self.min_magic_damage = self.equipped_weapon.magic_damage_note[0] + self.equipped_armour.magic_damage_note[0] + \
-                                self.equipped_token.magic_damage_note[0]
-        self.max_magic_damage = self.equipped_weapon.magic_damage_note[1] + self.equipped_armour.magic_damage_note[1] + \
-                                self.equipped_token.magic_damage_note[1]
+        self.min_magic_damage = self.equipped_weapon.magic_damage_note[0] + self.equipped_armour.magic_damage_note[0] + self.equipped_token.magic_damage_note[0]
+        self.max_magic_damage = self.equipped_weapon.magic_damage_note[1] + self.equipped_armour.magic_damage_note[1] + self.equipped_token.magic_damage_note[1]
 
     def attack(self, target):
         self.damage_done = random.randint(self.min_physical_damage, self.max_physical_damage) + self.physical_damage
