@@ -137,7 +137,6 @@ class Submenu():
                     sys.exit()
 
             pygame.display.update()
-            #pygame.display.flip()
             clock.tick(FPS)
 
 class Submenu_new():
@@ -153,6 +152,15 @@ class Submenu_new():
             edge.fill(WHITE)
             screen.blit(edge, (10, 360))
             draw_text(self.title, 24, BLACK, screen, WIDTH * 0.50, HEIGHT * 0.75)
+
+            #EVENTS
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            pygame.display.update()
+            clock.tick(FPS)
 
 
 
@@ -634,12 +642,8 @@ def game():
                             battle_phase = 2
 
                         if user.menu_location == [1, 2]:
-                            print("MAGIC")
-                            # magic_abilities = Submenu("Magic", player.magic_abilities)
-                            # magic_abilities.running()
-
-
-
+                            magic_submenu = Submenu_new("MAGIC", None)
+                            magic_submenu.running()
 
                         if user.menu_location == [1, 3]:
                             print("ITEM")
