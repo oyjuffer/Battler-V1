@@ -139,22 +139,52 @@ class Submenu():
             pygame.display.update()
             clock.tick(FPS)
 
+
 class Submenu_new():
     def __init__(self, title, content):
-        self.title = title
-        self.content = content
-        user.menu_location = [1, 1]
+        self.title          = title
+        self.content        = content
+        user.menu_location  = [1, 1]
+
+        self.menu_list_locations    = [[50, 400], [50, 425], [50, 450], [50, 475],
+                                       [150, 400], [150, 425], [150, 450], [150, 475]]
+
+        self.menu_list_values       = [[1, 1], [1, 2], [1, 3], [1, 4], 
+                                       [2, 1], [2, 2], [2, 3], [2, 4]]
 
     def running(self):
         running = True
-        while running: 
+        while running:
             edge = pygame.Surface((480, 130))
             edge.fill(WHITE)
             screen.blit(edge, (10, 360))
             draw_text(self.title, 24, BLACK, screen, WIDTH * 0.50, HEIGHT * 0.75)
 
+
+
+            # INITIALIZATION
+            menu_slots = {}
+            for i in range(len(self.content)):
+                menu_slots[i] = Button(screen, self.content[i], BLACK, 18, self.menu_list_locations[i][0], self.menu_list_locations[i][1], self.menu_list_values[i])
+
+            # DRAW
+            for i in range(len(menu_slots)):
+                menu_slots[i].draw()
+
+                if menu_slots[i].button_location == user.menu_location:
+                    menu_slots[i].actived()
+
             #EVENTS
+            menu_control([1, 1, 2, 4])
             for event in pygame.event.get():
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        return True, 1
+
+                    if event.key == pygame.K_BACKSPACE:
+                        return False, 1
+
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -363,7 +393,7 @@ def draw_battle_text(text, player_nameplate, target_nameplate):
         pygame.display.update()
         clock.tick(FPS)
 
-        sleep(0.02)
+        sleep(0.01)
 
     wait_for_key()
 
@@ -618,7 +648,12 @@ def game():
     target_nameplate = Nameplate(12, 12, target)
 
     attack_button = Button(screen, "ATTACK", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.77, [1, 1])
+
     magic_button = Button(screen, "MAGIC", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.85, [1, 2])
+    
+    magic_list = ["magic1", "magic2", "magic3", "magic4", "magic5", "magic6", "magic7"]
+    magic_submenu = Submenu_new("MAGIC", magic_list)
+
     inventory_button = Button(screen, "ITEM", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.93, [1, 3])
 
     battletext = Battletext()
@@ -628,13 +663,14 @@ def game():
     while running:
 
         if battle_phase == 1:
-            print("BATTLE PHASE 1")
+            #print("BATTLE PHASE 1")
 
             # EVENTS
             menu_control([1, 1, 1, 3])  # min_x, min_y, max_x, max_y of button locations.
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
+
                         if user.menu_location == [1, 1]:
                             damage_done = player.attack(target)
                             reduce_health(damage_done, player_nameplate, target_nameplate)
@@ -642,8 +678,15 @@ def game():
                             battle_phase = 2
 
                         if user.menu_location == [1, 2]:
-                            magic_submenu = Submenu_new("MAGIC", None)
-                            magic_submenu.running()
+                            player_action = magic_submenu.running()
+                            if player_action[0] == True:
+                                user.menu_location = [1, 2]
+                                print("DO THING")
+                                print(player_action[1])
+                            elif player_action[0] == False:
+                                user.menu_location = [1, 2]   
+                                print("DONT DO THING")
+
 
                         if user.menu_location == [1, 3]:
                             print("ITEM")
