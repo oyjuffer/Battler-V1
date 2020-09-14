@@ -65,7 +65,7 @@ class Character:
         return self.damage_done
 
     def attack_magic(self, ability):
-        self.damage_done = ability.magic_damage
+        self.damage_done = ability.magic_damage + random.randint(self.min_magic_damage, self.max_magic_damage) + self.magic_damage
         return self.damage_done
 
     def inventory(self):

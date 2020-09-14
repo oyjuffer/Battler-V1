@@ -25,6 +25,10 @@ all_sprites = pygame.sprite.Group()
 class User:
     def __init__(self):
         self.menu_location = [1, 1]
+
+    def reset(self):
+        self.menu_location = [1, 1]
+
 user = User()
 
 class Button():
@@ -681,6 +685,7 @@ def game():
                                 damage_done = player.attack_magic(player.magic_abilities[player_action[1]])
                                 reduce_health(damage_done, player_nameplate, target_nameplate)
                                 draw_battle_text(battletext.magical_damage(player.name, damage_done, player.magic_abilities[player_action[1]]), player_nameplate, target_nameplate)
+                                user.reset()
                                 battle_phase = 2
 
                             elif player_action[0] == False:
@@ -754,8 +759,6 @@ def game():
                 draw_battle_text("GAME OVER!", player_nameplate, target_nameplate)
                 running = False
                 break
-
-
 
 def compendium():
     running = True
