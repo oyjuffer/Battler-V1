@@ -148,6 +148,7 @@ class Submenu():
         self.title          = title
         self.content        = content
 
+        # SUBMENU CURRENTLY SUPPORTS 8 SLOTS
         self.menu_list_locations    = [[30, 400], [30, 425], [30, 450], [30, 475],
                                        [130, 400], [130, 425], [130, 450], [130, 475]]
 
