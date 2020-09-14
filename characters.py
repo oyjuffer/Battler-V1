@@ -39,6 +39,7 @@ class Character:
         self.damage             = 0
         self.missed             = False
 
+        # EQUIPPED 
         self.equipped_weapon    = equipped_weapon
         self.equipped_armour    = none
         self.equipped_token     = none
@@ -74,4 +75,4 @@ class Character:
 
 player              = Character("Lorther", 1, 10, 1, 1, sword)
 npc_dustin_echos    = Character("Dustin Echos", 2, 2, 2, 2, rune_sword)
-npc_aurore          =  Character("Aurore", 3, 3, 3, 3, vorpal_sword)  
+npc_aurore          = Character("Aurore", 3, 3, 3, 3, vorpal_sword)  
