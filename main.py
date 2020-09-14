@@ -67,7 +67,7 @@ class Button():
     def function(self):
         pass
 
-class Submenu():
+class Submenu_old():
     def __init__(self, title, content):
         self.title = title
         self.content = content
@@ -143,11 +143,10 @@ class Submenu():
             pygame.display.update()
             clock.tick(FPS)
 
-class Submenu_new():
+class Submenu():
     def __init__(self, title, content):
         self.title          = title
         self.content        = content
-        user.menu_location  = [1, 1]
 
         self.menu_list_locations    = [[30, 400], [30, 425], [30, 450], [30, 475],
                                        [130, 400], [130, 425], [130, 450], [130, 475]]
@@ -157,6 +156,8 @@ class Submenu_new():
 
     def running(self):
         running = True
+        user.reset()
+
         while running:
             edge = pygame.Surface((480, 130))
             edge.fill(WHITE)
@@ -189,7 +190,7 @@ class Submenu_new():
                         return True, actived_slot
 
                     if event.key == pygame.K_BACKSPACE:
-                        return False
+                        return False, None
 
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -475,6 +476,8 @@ def start_game():
         player.convert_stats()
 
         weapon_button = Button(screen, player.equipped_weapon.name, BLACK, 32, WIDTH * 0.20, HEIGHT * 0.52, [1, 3])
+        weapon_submenu = Submenu("Weapons", player.inventory_weapon)
+
         armour_button = Button(screen, player.equipped_armour.name, BLACK, 32, WIDTH * 0.50, HEIGHT * 0.52, [2, 3])
         token_button = Button(screen, player.equipped_token.name, BLACK, 32, WIDTH * 0.80, HEIGHT * 0.52, [3, 3])
 
@@ -507,15 +510,20 @@ def start_game():
                         sleep(0.1)
 
                     if user.menu_location == [1, 3]:
-                        weapon_inventory_submenu = Submenu("Weapons", player.inventory_weapon)
-                        weapon_inventory_submenu.running()
+
+                        player_action = weapon_submenu.running()
+                        if player_action[0] == True:
+                             player.equipped_weapon = player.inventory_weapon[player_action[1]]
+                        user.menu_location = [1, 3]
+
+
 
                     if user.menu_location == [2, 3]:
-                        armour_inventory_submenu = Submenu("Armours", player.inventory_armour)
+                        armour_inventory_submenu = Submenu_old("Armours", player.inventory_armour)
                         armour_inventory_submenu.running()
 
                     if user.menu_location == [3, 3]:
-                        token_inventory_submenu = Submenu("Tokens", player.inventory_token)
+                        token_inventory_submenu = Submenu_old("Tokens", player.inventory_token)
                         token_inventory_submenu.running()
 
                     if user.menu_location == [1, 4]:
@@ -634,13 +642,12 @@ def start_game():
             start_button.actived()
 
         pygame.display.update()
-        # pygame.display.flip()
         clock.tick(FPS)
 
 def game():
     running = True
-
-    user.menu_location = [1, 1]
+    user.reset()
+    
     battle_phase = 1
     target = npc_dustin_echos
 
@@ -654,7 +661,7 @@ def game():
     attack_button = Button(screen, "ATTACK", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.77, [1, 1])
 
     magic_button = Button(screen, "MAGIC", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.85, [1, 2])
-    magic_submenu = Submenu_new("MAGIC", player.magic_abilities)
+    magic_submenu = Submenu("MAGIC", player.magic_abilities)
 
     inventory_button = Button(screen, "ITEM", BLACK, 32, WIDTH * 0.07, HEIGHT * 0.93, [1, 3])
 
@@ -680,6 +687,7 @@ def game():
                             battle_phase = 2
 
                         if user.menu_location == [1, 2]:
+
                             player_action = magic_submenu.running()
                             if player_action[0] == True:
                                 damage_done = player.attack_magic(player.magic_abilities[player_action[1]])
@@ -687,11 +695,7 @@ def game():
                                 draw_battle_text(battletext.magical_damage(player.name, damage_done, player.magic_abilities[player_action[1]]), player_nameplate, target_nameplate)
                                 user.reset()
                                 battle_phase = 2
-
-                            elif player_action[0] == False:
-                                user.menu_location = [1, 2]   
-                                print("DONT DO THING")
-
+                            user.reset()
 
                         if user.menu_location == [1, 3]:
                             print("ITEM")
