@@ -67,82 +67,6 @@ class Button():
     def function(self):
         pass
 
-class Submenu_old():
-    def __init__(self, title, content):
-        self.title = title
-        self.content = content
-        user.menu_location = [1, 1]
-
-    def running(self):
-        running = True
-        while running:
-            edge = pygame.Surface((480, 130))
-            edge.fill(WHITE)
-            screen.blit(edge, (10, 360))
-            draw_text(self.title, 24, BLACK, screen, WIDTH * 0.50, HEIGHT * 0.75)
-
-            self.inventory_display_location = [0.06, 0.79]
-            self.inventory_button_location = [1, 1]
-            self.menu_list = []
-            self.menu_value_list = []
-
-            for i in range(len(self.content)):
-
-                self.item_infomation = str(self.content[i].name) + " " + str(
-                    self.content[i].physical_damage_note[0]) + "-" + str(
-                    self.content[i].physical_damage_note[1]) + "/" + str(
-                    self.content[i].magic_damage_note[0]) + "-" + str(
-                    self.content[i].magic_damage_note[1]) + " (" + str(self.content[i].strength) + "/" + str(
-                    self.content[i].intelligence) + "/" + str(self.content[i].constitution) + ")"
-                slot = Button(screen, self.item_infomation, BLACK, 18, WIDTH * self.inventory_display_location[0],
-                              HEIGHT * self.inventory_display_location[1], self.inventory_button_location)
-                slot.draw_left()
-
-                if slot.button_location == user.menu_location:
-                    slot.actived()
-                    self.item_selected = self.content[i]
-
-                self.menu_value_list.append(list(self.inventory_button_location))
-                self.menu_list.append(slot)
-
-                self.inventory_display_location[1] += 0.04
-                self.inventory_button_location[1] += 1
-
-                if self.inventory_button_location[1] >= 6:
-                    self.inventory_display_location[0] += 0.50
-                    self.inventory_display_location[1] = 0.79
-                    self.inventory_button_location[0] += 1
-                    self.inventory_button_location[1] = 1
-
-            self.minmax_data = menu_control_minmax(self.menu_value_list)
-
-            # EVENTS
-            menu_control(self.minmax_data)
-            for event in pygame.event.get():
-
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        if self.content == player.inventory_weapon:
-                            player.equipped_weapon = self.item_selected
-                            user.menu_location = [1, 3]
-                            running = False
-                        if self.content == player.inventory_armour:
-                            player.equipped_armour = self.item_selected
-                            user.menu_location = [2, 3]
-                            running = False
-                        if self.content == player.inventory_token:
-                            player.equipped_token = self.item_selected
-                            user.menu_location = [3, 3]
-                            running = False
-                        sleep(0.1)
-
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-            pygame.display.update()
-            clock.tick(FPS)
-
 class Submenu():
     def __init__(self, title, content):
         self.title          = title
@@ -157,6 +81,7 @@ class Submenu():
 
     def running(self):
         running = True
+        count = 1
         user.reset()
 
         while running:
@@ -165,7 +90,16 @@ class Submenu():
             screen.blit(edge, (10, 360))
             draw_text(self.title, 24, BLACK, screen, WIDTH * 0.50, HEIGHT * 0.75)
 
-            print("RUNNING {} SUBMENU".format(self.title))
+            
+            if count <= 3:
+                print("RUNNING {} SUBMENU".format(self.title))
+                count += 1
+            elif count >= 1000:
+                count = 1
+            else:
+                count += 1
+
+
 
             # INITIALIZATION
             menu_slots      = {}
@@ -480,7 +414,10 @@ def start_game():
         weapon_submenu = Submenu("Weapons", player.inventory_weapon)
 
         armour_button = Button(screen, player.equipped_armour.name, BLACK, 32, WIDTH * 0.50, HEIGHT * 0.52, [2, 3])
+        armour_submenu = Submenu("Armour", player.inventory_armour)
+
         token_button = Button(screen, player.equipped_token.name, BLACK, 32, WIDTH * 0.80, HEIGHT * 0.52, [3, 3])
+        token_submenu = Submenu("Token", player.inventory_token)
 
         back_button = Button(screen, "BACK", BLACK, 32, WIDTH * 0.13, HEIGHT * 0.95, [1, 4])
         reset_button = Button(screen, "RESET", BLACK, 32, WIDTH * 0.50, HEIGHT * 0.95, [2, 4])
@@ -520,15 +457,21 @@ def start_game():
 
 
                     if user.menu_location == [2, 3]:
-                        armour_inventory_submenu = Submenu_old("Armours", player.inventory_armour)
-                        armour_inventory_submenu.running()
+
+                        player_action = armour_submenu.running()
+                        if player_action[0] == True:
+                             player.equipped_armour = player.inventory_armour[player_action[1]]
+                        user.menu_location = [2, 3]
 
                     if user.menu_location == [3, 3]:
-                        token_inventory_submenu = Submenu_old("Tokens", player.inventory_token)
-                        token_inventory_submenu.running()
+
+                        player_action = token_submenu.running()
+                        if player_action[0] == True:
+                             player.equipped_token = player.inventory_token[player_action[1]]
+                        user.menu_location = [3, 3]
 
                     if user.menu_location == [1, 4]:
-                        user.menu_location = [1, 1]
+                        user.reset()
                         running = False
 
                     if user.menu_location == [2, 4]:
